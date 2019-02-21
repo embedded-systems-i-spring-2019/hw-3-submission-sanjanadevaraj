@@ -1,0 +1,47 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+entity Chap7Ex4 is
+port (LDA,LDB,S0,S1,RD,CLK : in std_logic;
+X,Y : in std_logic_vector(7 downto 0);
+RA,RB : out std_logic_vector(7 downto 0));
+end Chap7Ex4;
+
+architecture Chap7Ex4_behavioral of Chap7Ex4 is
+signal mux1_output, mux2_output, RegA_output, RegB_output : std_logic_vector(7 downto 0);
+
+begin
+with S1 select
+mux1_output <= X when '1',
+Y when '0',
+(others => '0') when others;
+
+with S0 select
+mux2_output <= RegB_output when '1',
+Y when '0',
+(others => '0') when others;
+
+regb: process(CLK)
+begin
+if (rising_edge(CLK)) then
+if ((LDA and RD) = '1') then
+RegA_output <= mux2_output;
+end if;
+end if;
+end process;
+RB <= RegB_output;
+
+rega: process(CLK)
+begin
+if (rising_edge(CLK)) then
+if ((LDB and (not RD)) = '1') then
+RegB_output <= mux1_output;
+end if;
+end if;
+end process;
+RA <= RegA_output;
+    
+end Chap7Ex4_behavioral;
+
+
