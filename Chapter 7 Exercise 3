@@ -1,0 +1,47 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+entity Chap7Ex3 is
+port (LDA,LDB,S0,S1,CLK: in std_logic;
+X,Y : in std_logic_vector (7 downto 0);
+RB : out std_logic_vector (7 downto 0));
+end Chap7Ex3;
+
+architecture Chap7Ex3_behavioral of Chap7Ex3 is
+signal mux1_output, mux2_output: std_logic_vector (7 downto 0);
+signal decoder_output: std_logic_vector (1 downto 0);
+signal RegA_output, RegB_output: std_logic_vector (7 downto 0);
+
+begin
+with S1 select
+mux1_output <= RegB_output when '0',
+X when '1',
+"00000000" when others;
+
+with S0 select
+mux2_output <= Y when '0',
+RegA_output when '1',
+"00000000" when others;
+
+rega: process(CLK)
+begin 
+if (rising_edge(CLK)) 
+then if (LDA = '1') then 
+RegA_output <= mux1_output; 
+end if; 
+end if; 
+end process;
+
+
+regb: process(CLK)
+begin 
+if (rising_edge(CLK)) 
+then if (LDB = '1') then 
+RegB_output <= mux2_output; 
+end if; 
+end if; 
+end process;
+RB <= RegB_output;
+
+end Chap7Ex3_behavioral;
