@@ -1,0 +1,45 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+entity Chap7Ex6 is
+port (SEL1,SEL2,CLK: in std_logic;
+A,B,C: in std_logic_vector(7 downto 0);
+RAP,RBP: out std_logic_vector(7 downto 0));
+end Chap7Ex6;
+
+architecture Chap7Ex6_behavioral of Chap7Ex6 is
+signal decoder_output: std_logic_vector(1 downto 0);
+signal mux_output: std_logic_vector(7 downto 0);
+
+begin
+
+with SEL1 select
+mux_output <= A when '1',
+B when '0',
+"00000000" when others;
+
+with SEL2 select
+decoder_output <= "01" when '0',
+"10" when '1',
+"00" when others;
+               
+rega: process(CLK)
+begin 
+if (rising_edge(CLK)) then
+if (decoder_output(1) = '1') then 
+RAP <= mux_output; 
+end if; 
+end if; 
+end process;
+
+regb: process(CLK)
+begin 
+if (rising_edge(CLK)) then 
+if (decoder_output(0) = '1') then 
+RBP <= C; 
+end if; 
+end if; 
+end process;
+
+end Chap7Ex6_behavioral;
