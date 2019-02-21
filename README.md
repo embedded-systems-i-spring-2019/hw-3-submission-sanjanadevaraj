@@ -1,3 +1,3 @@
 # hw-3-submission-sanjanadevaraj
-Chapter 7 Exercise problems (VHDL code and RTL schematics enclosed)
+VHDL code for Chapter 7 Exercise problems is enclosed
 
