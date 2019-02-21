@@ -25,5 +25,4 @@ F <= mux_output;
 end if;
 end if;
 end process;
-
 end Chap7Ex1_behavioral;
